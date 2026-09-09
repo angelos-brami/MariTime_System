@@ -2,7 +2,7 @@ import json
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from datetime import UTC, date, datetime
-from typing import Annotated
+from typing import Annotated, Any
 from uuid import UUID
 
 from eastmed_pipeline.claim_extraction import (
@@ -20,6 +20,13 @@ from eastmed_pipeline.lineage import (
     review_lineage_proposal,
 )
 from eastmed_pipeline.operations import run_source_now
+from eastmed_pipeline.reconciliation_read import (
+    get_case_timeline,
+    get_case_view,
+    get_daily_report,
+    get_service_health,
+    list_cases,
+)
 from eastmed_pipeline.rights import RightsPolicyError
 from eastmed_pipeline.triage import (
     TriageActionInput,
@@ -58,6 +65,7 @@ from eastmed_schema.models import (
 )
 from eastmed_shared import configure_error_monitoring, get_settings
 from eastmed_shared.logging import configure_logging
+from eastmed_shared.reconciliation.read_model import PresentationStatus
 from fastapi import Depends, FastAPI, HTTPException, Query, Request, Response, status
 from sqlalchemy import select, text
 from sqlalchemy.orm import Session
@@ -249,6 +257,7 @@ from eastmed_api.quality import (
     quality_scoreboard,
     update_ttv_log,
 )
+from eastmed_api.reconciliation_service import ingest_reconciliation_record
 from eastmed_api.reliability import get_reliability_receipt, latest_reliability_receipt
 from eastmed_api.reports import (
     ReportWorkflowError,
@@ -647,6 +656,90 @@ def data_ais_positions(
         max_age_minutes=max_age_minutes,
         limit=limit,
     )
+
+
+# --- Reconciliation customer API (blueprint 25) --------------------------------------
+# Authenticated ingestion + account-scoped read routes wiring the work-order-8 read model.
+# Every route is scoped to the API key's account; a case that is not the caller's is reported
+# as not found, never confirmed to exist. Ingestion takes the tenant from the authenticated
+# key, never from the payload (blueprint 17).
+
+RECON_READ_SCOPE = "recon:read"
+RECON_INGEST_SCOPE = "recon:ingest"
+
+
+@app.post("/api/v1/recon/ingest", tags=["Reconciliation"])
+def recon_ingest(payload: dict[str, Any], db: DB, principal: DataAuth) -> dict[str, object]:
+    require_data_scope(principal, RECON_INGEST_SCOPE)
+    receipt = ingest_reconciliation_record(db, account_id=principal.account_id, payload=payload)
+    if receipt.is_client_error:
+        db.rollback()
+        raise HTTPException(
+            status_code=receipt.http_status,
+            detail=receipt.detail or receipt.status.value,
+        )
+    db.commit()
+    return receipt.render()
+
+
+@app.get("/api/v1/recon/cases", tags=["Reconciliation"])
+def recon_cases(
+    db: DB,
+    principal: DataAuth,
+    presentation_status: Annotated[PresentationStatus | None, Query(alias="status")] = None,
+    cursor: Annotated[str | None, Query(max_length=64)] = None,
+    limit: Annotated[int, Query(ge=1, le=200)] = 50,
+) -> dict[str, object]:
+    require_data_scope(principal, RECON_READ_SCOPE)
+    return list_cases(
+        db,
+        account_id=principal.account_id,
+        status=presentation_status,
+        cursor=cursor,
+        limit=limit,
+    ).render()
+
+
+@app.get("/api/v1/recon/cases/{case_id}", tags=["Reconciliation"])
+def recon_case(case_id: UUID, db: DB, principal: DataAuth) -> dict[str, object]:
+    require_data_scope(principal, RECON_READ_SCOPE)
+    view = get_case_view(db, account_id=principal.account_id, case_id=case_id)
+    if view is None:
+        raise HTTPException(status_code=404, detail="Case not found")
+    return view.render()
+
+
+@app.get("/api/v1/recon/cases/{case_id}/timeline", tags=["Reconciliation"])
+def recon_case_timeline(case_id: UUID, db: DB, principal: DataAuth) -> dict[str, object]:
+    require_data_scope(principal, RECON_READ_SCOPE)
+    timeline = get_case_timeline(db, account_id=principal.account_id, case_id=case_id)
+    if timeline is None:
+        raise HTTPException(status_code=404, detail="Case not found")
+    return timeline.render()
+
+
+@app.get("/api/v1/recon/daily-report", tags=["Reconciliation"])
+def recon_daily_report(
+    db: DB,
+    principal: DataAuth,
+    period_start: datetime,
+    period_end: datetime,
+) -> dict[str, object]:
+    require_data_scope(principal, RECON_READ_SCOPE)
+    if period_end <= period_start:
+        raise HTTPException(status_code=422, detail="period_end must be after period_start")
+    return get_daily_report(
+        db,
+        account_id=principal.account_id,
+        period_start=period_start,
+        period_end=period_end,
+    ).render()
+
+
+@app.get("/api/v1/recon/health", tags=["Reconciliation"])
+def recon_health(db: DB, principal: DataAuth) -> dict[str, object]:
+    require_data_scope(principal, RECON_READ_SCOPE)
+    return get_service_health(db, account_id=principal.account_id).render()
 
 
 @app.get("/api/v1/portal/board", response_model=PortalBoardRead)

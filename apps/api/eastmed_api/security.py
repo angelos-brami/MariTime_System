@@ -382,7 +382,11 @@ def require_data_api_key(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Account contract is inactive",
         )
-    if api_key.last_used_at is None or api_key.last_used_at < now - timedelta(minutes=5):
+    last_used = api_key.last_used_at
+    if last_used is not None and last_used.tzinfo is None:
+        # A backend that drops tzinfo (SQLite in tests) still compares against aware `now`.
+        last_used = last_used.replace(tzinfo=UTC)
+    if last_used is None or last_used < now - timedelta(minutes=5):
         api_key.last_used_at = now
         db.commit()
     return DataApiPrincipal(
