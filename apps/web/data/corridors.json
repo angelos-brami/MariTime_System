@@ -1,0 +1,28 @@
+{
+  "verifiedAt": "2026-07-19T15:00:00+03:00",
+  "coverageWindow": "06:00–22:00 EET",
+  "corridors": [
+    {
+      "id": "hormuz-gulf",
+      "name": "Hormuz / Gulf",
+      "status": "monitoring",
+      "summary": "Desk setup in progress; no operational status has been published yet.",
+      "verifiedAt": null
+    },
+    {
+      "id": "red-sea-suez",
+      "name": "Red Sea / Suez",
+      "status": "monitoring",
+      "summary": "Desk setup in progress; no operational status has been published yet.",
+      "verifiedAt": null
+    },
+    {
+      "id": "east-med",
+      "name": "East Med / Greek Ports",
+      "status": "monitoring",
+      "summary": "Desk setup in progress; no operational status has been published yet.",
+      "verifiedAt": null
+    }
+  ]
+}
+

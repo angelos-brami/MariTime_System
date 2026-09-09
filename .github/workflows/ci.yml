@@ -1,0 +1,39 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e ".[dev]"
+      - run: pip install pip-audit
+      - run: pip-audit
+      - run: ruff check .
+      - run: mypy apps/api packages tests
+      - run: alembic -c apps/api/alembic.ini upgrade head --sql > migration.sql
+      - run: pytest -W error --cov=packages --cov=apps/api --cov-report=term-missing --cov-fail-under=60
+
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.9.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm audit --prod --audit-level high
+      - run: pnpm lint:web
+      - run: pnpm typecheck:web
+      - run: pnpm build:web

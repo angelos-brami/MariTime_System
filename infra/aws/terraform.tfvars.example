@@ -1,0 +1,17 @@
+app_domain                        = "intelligence.example.com"
+api_domain                        = "api.intelligence.example.com"
+route53_zone_id                   = "Z0000000000000000000"
+alarm_email                       = "operations@example.com"
+clerk_publishable_key             = "pk_live_REPLACE"
+clerk_issuer                      = "https://REPLACE.clerk.accounts.dev"
+claim_extraction_system_fingerprint = "0000000000000000000000000000000000000000000000000000000000000000"
+allowed_fetch_hosts               = "REPLACE_WITH_scripts/render_source_allowlist.py_OUTPUT"
+image_tag                         = "REPLACE_WITH_GIT_COMMIT_SHA"
+activate_services                 = false
+enable_postmark                   = false
+postmark_from_email               = "alerts@example.com"
+postmark_message_stream           = "alerts"
+enable_telegram                   = false
+enable_whatsapp                   = false
+whatsapp_webhook_username         = "REPLACE_IF_ENABLED"
+enable_sentry                     = false

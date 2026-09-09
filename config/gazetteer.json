@@ -1,0 +1,40 @@
+{
+  "version": "eastmed-gazetteer-v1",
+  "corridors": [
+    {
+      "id": "hormuz_gulf",
+      "label": "Hormuz / Gulf",
+      "aliases": ["Strait of Hormuz", "Hormuz", "Persian Gulf", "Arabian Gulf", "Στενά του Ορμούζ"]
+    },
+    {
+      "id": "red_sea_bem_suez",
+      "label": "Red Sea / Bab el-Mandeb / Suez",
+      "aliases": ["Red Sea", "Bab el-Mandeb", "Bab al-Mandab", "Suez Canal", "Gulf of Aden", "Ερυθρά Θάλασσα", "Διώρυγα του Σουέζ"]
+    },
+    {
+      "id": "east_med",
+      "label": "East Mediterranean",
+      "aliases": ["Eastern Mediterranean", "East Mediterranean", "East Med", "Levantine Sea", "Ανατολική Μεσόγειος"]
+    }
+  ],
+  "ports": [
+    {"name": "Piraeus", "unlocode": "GRPIR", "corridor": "east_med", "aliases": ["Piraeus", "Port of Piraeus", "Πειραιάς", "Πειραιά", "Λιμάνι Πειραιά"]},
+    {"name": "Thessaloniki", "unlocode": "GRSKG", "corridor": "east_med", "aliases": ["Thessaloniki", "Port of Thessaloniki", "Θεσσαλονίκη", "Λιμάνι Θεσσαλονίκης"]},
+    {"name": "Limassol", "unlocode": "CYLMS", "corridor": "east_med", "aliases": ["Limassol", "Lemesos", "Λεμεσός"]},
+    {"name": "Larnaca", "unlocode": "CYLCA", "corridor": "east_med", "aliases": ["Larnaca", "Λάρνακα"]},
+    {"name": "Haifa", "unlocode": "ILHFA", "corridor": "east_med", "aliases": ["Haifa", "Port of Haifa", "חיפה"]},
+    {"name": "Ashdod", "unlocode": "ILASH", "corridor": "east_med", "aliases": ["Ashdod", "Port of Ashdod", "אשדוד"]},
+    {"name": "Beirut", "unlocode": "LBBEY", "corridor": "east_med", "aliases": ["Beirut", "Port of Beirut", "بيروت"]},
+    {"name": "Mersin", "unlocode": "TRMER", "corridor": "east_med", "aliases": ["Mersin", "Port of Mersin"]},
+    {"name": "Port Said", "unlocode": "EGPSD", "corridor": "red_sea_bem_suez", "aliases": ["Port Said", "Port-Said", "بورسعيد"]},
+    {"name": "Suez", "unlocode": "EGSUZ", "corridor": "red_sea_bem_suez", "aliases": ["Port of Suez", "Suez Port", "السويس"]},
+    {"name": "Jeddah", "unlocode": "SAJED", "corridor": "red_sea_bem_suez", "aliases": ["Jeddah", "Jeddah Islamic Port", "جدة"]},
+    {"name": "Yanbu", "unlocode": "SAYNB", "corridor": "red_sea_bem_suez", "aliases": ["Yanbu", "Yanbu Commercial Port", "ينبع"]},
+    {"name": "Aqaba", "unlocode": "JOAQB", "corridor": "red_sea_bem_suez", "aliases": ["Aqaba", "Port of Aqaba", "العقبة"]},
+    {"name": "Djibouti", "unlocode": "DJJIB", "corridor": "red_sea_bem_suez", "aliases": ["Djibouti", "Port of Djibouti"]},
+    {"name": "Salalah", "unlocode": "OMSLL", "corridor": "red_sea_bem_suez", "aliases": ["Salalah", "Port of Salalah", "صلالة"]},
+    {"name": "Fujairah", "unlocode": "AEFJR", "corridor": "hormuz_gulf", "aliases": ["Fujairah", "Port of Fujairah", "الفجيرة"]},
+    {"name": "Jebel Ali", "unlocode": "AEJEA", "corridor": "hormuz_gulf", "aliases": ["Jebel Ali", "Jabal Ali", "Port of Jebel Ali", "جبل علي"]},
+    {"name": "Bandar Abbas", "unlocode": "IRBND", "corridor": "hormuz_gulf", "aliases": ["Bandar Abbas", "Shahid Rajaee", "بندر عباس"]}
+  ]
+}

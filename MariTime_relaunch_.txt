@@ -1,0 +1,7 @@
+To relaunch
+
+
+cd apps/web
+EASTMED_ENVIRONMENT=local EASTMED_PORTAL_DEMO=true EASTMED_CONSOLE_DEMO=true \
+EASTMED_CONSOLE_USERNAME=demo EASTMED_CONSOLE_PASSWORD=demo PORT=4123 \
+corepack pnpm --filter @eastmed/web start

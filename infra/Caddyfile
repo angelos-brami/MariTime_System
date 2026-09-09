@@ -1,0 +1,19 @@
+{
+  email {$EASTMED_ACME_EMAIL:ops@example.invalid}
+}
+
+{$EASTMED_PUBLIC_HOST:localhost} {
+  encode zstd gzip
+  request_body {
+    max_size 25MB
+  }
+  reverse_proxy web:3000
+}
+
+{$EASTMED_API_HOST:api.localhost} {
+  encode zstd gzip
+  request_body {
+    max_size 25MB
+  }
+  reverse_proxy api:8000
+}

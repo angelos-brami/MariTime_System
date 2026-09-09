@@ -1,0 +1,13 @@
+version: claim-extraction-graduation-v2
+prompt_version: claim_extraction_v2
+mode: shadow
+minimum_shadow_days: 60
+minimum_reviewed_per_language: 30
+minimum_qa_per_language: 30
+minimum_time_reduction_percent: 50
+# Fill these only from the Phase-1/manual control set. Null blocks graduation.
+baseline_error_rate_by_language:
+  en: null
+  el: null
+  tr: null
+  ar: null

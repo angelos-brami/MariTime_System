@@ -1,0 +1,11 @@
+{
+  "name": "eastmed-intelligence",
+  "private": true,
+  "packageManager": "pnpm@11.9.0",
+  "scripts": {
+    "dev:web": "pnpm --filter @eastmed/web dev",
+    "build:web": "pnpm --filter @eastmed/web build",
+    "lint:web": "pnpm --filter @eastmed/web lint",
+    "typecheck:web": "pnpm --filter @eastmed/web typecheck"
+  }
+}

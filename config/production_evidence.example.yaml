@@ -1,0 +1,48 @@
+schema_version: "1.0"
+status: pending-owner-evidence
+infrastructure:
+  terraform_apply_id: REPLACE_ME
+  migration_task_id: REPLACE_ME
+  restore_drill_id: REPLACE_ME
+  monitoring_acceptance_id: REPLACE_ME
+  secret_rotation_id: REPLACE_ME
+identity:
+  provider: clerk
+  operators:
+    - email: REPLACE_ME
+      provider_user_id: REPLACE_ME
+      passkey_mfa_evidence_id: REPLACE_ME
+    - email: REPLACE_ME
+      provider_user_id: REPLACE_ME
+      passkey_mfa_evidence_id: REPLACE_ME
+sources:
+  approved_active_count: 0
+  signed_rights_register_id: REPLACE_ME
+  source_health_report_id: REPLACE_ME
+  dead_source_drill_id: REPLACE_ME
+ai:
+  provider: anthropic
+  provider_contract_id: REPLACE_ME
+  system_fingerprint: REPLACE_ME
+  shadow_days: 0
+  gold_evaluation_id: REPLACE_ME
+  languages:
+    en: { reviewed: 0, qa_reviewed: 0, precision: 0, recall: 0, hallucination_rate: 1, missed_claim_rate: 1 }
+    el: { reviewed: 0, qa_reviewed: 0, precision: 0, recall: 0, hallucination_rate: 1, missed_claim_rate: 1 }
+    tr: { reviewed: 0, qa_reviewed: 0, precision: 0, recall: 0, hallucination_rate: 1, missed_claim_rate: 1 }
+    ar: { reviewed: 0, qa_reviewed: 0, precision: 0, recall: 0, hallucination_rate: 1, missed_claim_rate: 1 }
+delivery:
+  outbound_enabled_during_acceptance: false
+  postmark_acceptance_id: REPLACE_ME
+  telegram_acceptance_id: REPLACE_ME
+  whatsapp_offered: false
+  whatsapp_acceptance_id: NOT_APPLICABLE
+  retry_duplicate_kill_switch_evidence_id: REPLACE_ME
+legal:
+  source_rights_approval_id: REPLACE_ME
+  privacy_notice_approval_id: REPLACE_ME
+  terms_approval_id: REPLACE_ME
+  dpa_approval_id: REPLACE_ME
+  customer_contract_id: REPLACE_ME
+  insurance_policy_id: REPLACE_ME
+  operational_contacts_test_id: REPLACE_ME

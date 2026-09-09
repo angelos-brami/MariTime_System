@@ -1,0 +1,47 @@
+schema_version: "1.0"
+status: template-not-production
+company:
+  legal_name: REPLACE_ME
+  registration_number: REPLACE_ME
+  registered_address: REPLACE_ME
+contacts:
+  executive_launch_owner:
+    name: REPLACE_ME
+    email: REPLACE_ME
+    phone: REPLACE_ME
+    alternate: REPLACE_ME
+  senior_operator_primary:
+    name: REPLACE_ME
+    email: REPLACE_ME
+    phone: REPLACE_ME
+    clerk_user_id: REPLACE_AFTER_ENROLMENT
+  senior_operator_secondary:
+    name: REPLACE_ME
+    email: REPLACE_ME
+    phone: REPLACE_ME
+    clerk_user_id: REPLACE_AFTER_ENROLMENT
+  editorial_escalation:
+    name: REPLACE_ME
+    email: REPLACE_ME
+    phone: REPLACE_ME
+  security_incident:
+    name: REPLACE_ME
+    email: REPLACE_ME
+    phone: REPLACE_ME
+  privacy_requests:
+    name: REPLACE_ME
+    email: REPLACE_ME
+    phone: REPLACE_ME
+  legal_counsel:
+    name: REPLACE_ME
+    firm: REPLACE_ME
+    email: REPLACE_ME
+    phone: REPLACE_ME
+  insurance_broker:
+    name: REPLACE_ME
+    firm: REPLACE_ME
+    email: REPLACE_ME
+    phone: REPLACE_ME
+customers: []
+# Each live customer entry requires legal_name, service_owner, primary_escalation,
+# secondary_escalation, tested_at, accepted_channels, and contract/evidence IDs.

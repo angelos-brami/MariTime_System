@@ -1,0 +1,1 @@
+"""East Med FastAPI application."""

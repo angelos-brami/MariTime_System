@@ -1,0 +1,15 @@
+version: alert-rules-v1
+throttles:
+  watch:
+    max_alerts_day: 3
+    min_severity: 3
+  desk:
+    max_alerts_day: 8
+    min_severity: 2
+  desk_pro:
+    max_alerts_day: 12
+    min_severity: 1
+  data:
+    max_alerts_day: 20
+    min_severity: 1
+severity_4_bypasses_daily_cap: true

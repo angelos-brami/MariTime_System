@@ -1,0 +1,88 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eastmed-intelligence"
+version = "0.1.0"
+description = "Verified maritime event intelligence platform"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "alembic>=1.14,<2",
+  "fastapi>=0.115,<1",
+  "feedparser>=6.0.11,<7",
+  "geoalchemy2>=0.16,<1",
+  "httpx>=0.28,<1",
+  "pdfplumber>=0.11,<1",
+  "pgvector>=0.3.6,<1",
+  "psycopg[binary]>=3.2,<4",
+  "pyjwt[crypto]>=2.10,<3",
+  "pydantic-settings>=2.7,<3",
+  "pyyaml>=6,<7",
+  "redis>=5.2,<7",
+  "reportlab>=4.2,<5",
+  "rq>=2.1,<3",
+  "sentry-sdk[fastapi]>=2.54,<3",
+  "sqlalchemy>=2.0.36,<3",
+  "structlog>=24.4,<26",
+  "trafilatura>=2.0,<3",
+  "uvicorn[standard]>=0.34,<1",
+  "websockets>=15,<17",
+]
+
+[project.optional-dependencies]
+dev = [
+  "mypy>=1.14,<2",
+  "pytest>=9.0.3,<10",
+  "pytest-cov>=6,<7",
+  "respx>=0.22,<1",
+  "ruff>=0.9,<1",
+  "types-reportlab>=4.4,<5",
+  "types-redis>=4.6,<5",
+  "types-PyYAML>=6.0.12,<7",
+]
+embeddings = [
+  "sentence-transformers>=3,<6",
+]
+
+[project.scripts]
+eastmed-worker = "eastmed_pipeline.worker:main"
+eastmed-ingestion-worker = "eastmed_pipeline.worker:ingestion_main"
+eastmed-publication-worker = "eastmed_pipeline.worker:publication_main"
+eastmed-delivery-worker = "eastmed_pipeline.worker:delivery_main"
+eastmed-analysis-worker = "eastmed_pipeline.worker:analysis_main"
+eastmed-embedding-worker = "eastmed_pipeline.worker:embedding_main"
+eastmed-scheduler = "eastmed_pipeline.scheduler:main"
+eastmed-import-airtable = "eastmed_pipeline.airtable_import:main"
+eastmed-seed-sources = "eastmed_pipeline.source_seed:main"
+eastmed-ais-cache = "eastmed_pipeline.ais_cache:main"
+eastmed-bootstrap-desk-user = "eastmed_api.bootstrap_desk_user:main"
+eastmed-provision-database-roles = "eastmed_api.provision_database_roles:main"
+eastmed-container-entrypoint = "eastmed_shared.container_entrypoint:main"
+
+[tool.setuptools.packages.find]
+where = ["apps/api", "packages/schema", "packages/pipeline", "packages/shared"]
+include = ["eastmed_*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers --disable-warnings"
+# Put the repo root on sys.path so tests importing top-level `scripts`/`apps`
+# (e.g. tests/test_restore_drill.py, tests/test_schema_snapshot.py) collect under
+# the bare `pytest` console script the CI uses, matching `python -m pytest` and
+# alembic's `prepend_sys_path = .`.
+pythonpath = ["."]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "S", "SIM"]
+ignore = ["S101"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+packages = ["eastmed_api", "eastmed_schema", "eastmed_pipeline", "eastmed_shared"]
+exclude = ["apps/api/alembic/"]
