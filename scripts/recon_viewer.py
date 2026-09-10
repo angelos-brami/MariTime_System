@@ -960,6 +960,83 @@ PAGE_CSS_EXTRA2 = """
   .ksrow{grid-template-columns:1fr}}
 """
 
+PAGE_CSS_POLISH = """
+/* ================= VISUAL POLISH — loaded last, elevates the base ================= */
+:root{
+  --ink:#eef3fe; --muted:#8b95ad;
+  --line:rgba(150,180,255,.12);
+  --panel:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  --cyan:#35ecd2; --blue:#6aa8ff; --grn:#3ff0ad; --amb:#ffcc5e; --red:#ff6a80;
+  --accent:linear-gradient(120deg,#35ecd2 0%,#6aa8ff 55%,#a78bff 100%);
+  --rim:linear-gradient(180deg,rgba(255,255,255,.30),rgba(255,255,255,0) 42%);
+  --elev:0 34px 90px -28px rgba(0,0,0,.72), 0 10px 30px -18px rgba(0,0,0,.55);
+}
+/* deeper, more atmospheric ambient field */
+body::before{filter:saturate(1.28) blur(2px)}
+
+/* topbar — crisper glass with a luminous underline */
+.topbar{padding:18px 34px;border-bottom:none;overflow:visible;
+  background:linear-gradient(180deg,rgba(6,9,18,.92),rgba(6,9,18,.30))}
+.topbar::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(53,236,210,.55),rgba(106,168,255,.55),transparent)}
+.brand{letter-spacing:.2em}
+.brand .logo{box-shadow:0 0 0 1px rgba(255,255,255,.16),0 0 28px rgba(53,236,210,.55)}
+
+/* a more generous, confident canvas */
+.wrap{max-width:1320px;padding:38px 34px 132px}
+h1{font-size:44px;letter-spacing:-.025em;margin:10px 0 12px}
+.crumbs{letter-spacing:.13em;text-transform:uppercase;font-size:11px}
+.tag{padding:8px 14px;font-size:11.5px;border-color:rgba(53,236,210,.35);
+  background:linear-gradient(135deg,rgba(53,236,210,.12),rgba(106,168,255,.07));
+  box-shadow:0 0 26px rgba(53,236,210,.12)}
+
+/* premium panels — gradient surface, luminous rim, deep shadow, lift on hover */
+.panel{border-radius:20px;box-shadow:var(--elev);position:relative;
+  backdrop-filter:blur(12px) saturate(1.25);
+  transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .3s}
+.panel::before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1px;
+  background:var(--rim);pointer-events:none;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude}
+.grid2 .panel:hover,.hero .panel:hover{transform:translateY(-3px);
+  border-color:rgba(150,180,255,.22);
+  box-shadow:0 46px 110px -30px rgba(0,0,0,.78),0 0 44px -22px rgba(53,236,210,.42)}
+
+/* KPI — bigger numerals, a glowing accent underline */
+.kpi .v{font-size:32px}
+.kpi::after{height:3px;filter:saturate(1.35);box-shadow:0 0 16px var(--a,var(--cyan))}
+
+/* completion ring — halo glow + gradient-clipped value */
+.gauge .ringwrap::before{content:"";position:absolute;inset:-14%;border-radius:50%;z-index:-1;
+  background:radial-gradient(circle,rgba(53,236,210,.24),transparent 68%);filter:blur(6px)}
+.gauge .val b{font-size:38px;background:var(--accent);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  color:transparent;filter:drop-shadow(0 0 20px rgba(53,236,210,.30))}
+
+/* fleet ledger — header wash and a glowing hover edge */
+thead th{background:linear-gradient(180deg,rgba(150,180,255,.06),transparent)}
+tbody tr:hover{background:linear-gradient(90deg,rgba(53,236,210,.07),transparent)}
+tbody tr:hover td:first-child{box-shadow:inset 2px 0 0 var(--cyan)}
+
+/* command dock — signature accent primary */
+.dock{border-radius:18px;
+  box-shadow:0 24px 70px rgba(0,0,0,.6),0 0 44px -22px rgba(53,236,210,.5)}
+.dock .primary{background:var(--accent);color:#05070e;border-color:transparent;font-weight:600;
+  box-shadow:0 8px 24px -10px rgba(53,236,210,.6)}
+.dock .primary:hover{filter:brightness(1.08);box-shadow:0 12px 32px -10px rgba(53,236,210,.72)}
+
+/* one signature moment — a slow light sheen across the hero gauge */
+.hero .gauge{overflow:hidden}
+.hero .gauge::after{content:"";position:absolute;top:-60%;left:-40%;width:38%;height:220%;
+  transform:rotate(18deg);pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.10),transparent);
+  animation:sheen 7s ease-in-out infinite}
+@keyframes sheen{0%,55%{left:-40%}82%,100%{left:132%}}
+
+/* trust chips lift a little */
+.chip{border-radius:14px}
+"""
+
 PAGE_JS_EXTRA2 = """
 /* theme toggle */
 (function(){const KEY='mtime-theme';const root=document.documentElement;
@@ -1362,7 +1439,8 @@ def render_page(session: Session, account_id: UUID) -> str:
             "<link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&"
             "family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&"
             "display=swap\" rel=\"stylesheet\">"
-            f"<style>{PAGE_CSS}{PAGE_CSS_EXTRA}{PAGE_CSS_EXTRA2}</style></head><body>{body}"
+            f"<style>{PAGE_CSS}{PAGE_CSS_EXTRA}{PAGE_CSS_EXTRA2}{PAGE_CSS_POLISH}</style>"
+            f"</head><body>{body}"
             f"<script>{PAGE_JS}{PAGE_JS_EXTRA}{PAGE_JS_EXTRA2}</script></body></html>")
 
 
